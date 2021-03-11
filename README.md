@@ -1,2 +1,2 @@
 # Bird
-Flappy
+flappy bird
