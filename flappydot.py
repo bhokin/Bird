@@ -24,6 +24,14 @@ class PillarPair(Sprite):
     def update(self):
         self.x -= PILLAR_SPEED
 
+    def is_out(self):
+        if self.x < -40:
+            return True
+        return False
+
+    def reappear(self):
+        self.x = CANVAS_WIDTH + 40
+
 
 class FlappyGame(GameApp):
     def create_sprites(self):
@@ -39,7 +47,8 @@ class FlappyGame(GameApp):
         pass
 
     def post_update(self):
-        pass
+        if self.pillar_pair.is_out():
+            self.pillar_pair.reappear()
 
     def on_key_pressed(self, event):
         pass
