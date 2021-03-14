@@ -25,15 +25,15 @@ class PillarPair(Sprite):
     def update(self):
         self.x -= PILLAR_SPEED
 
-    def is_out(self):
+    def is_out_of_screen(self):
         if self.x < -40:
             return True
         return False
 
-    def reappear(self):
+    def reset_position(self):
         self.x = CANVAS_WIDTH + 40
 
-    def ran_height(self):
+    def random_height(self):
         self.y = random.randint(100, 400)
 
 
@@ -51,9 +51,9 @@ class FlappyGame(GameApp):
         pass
 
     def post_update(self):
-        if self.pillar_pair.is_out():
-            self.pillar_pair.reappear()
-            self.pillar_pair.ran_height()
+        if self.pillar_pair.is_out_of_screen():
+            self.pillar_pair.reset_position()
+            self.pillar_pair.random_height()
 
     def on_key_pressed(self, event):
         pass
