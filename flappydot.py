@@ -1,4 +1,5 @@
 import tkinter as tk
+import random
 
 from gamelib import Sprite, GameApp, Text
 
@@ -32,6 +33,9 @@ class PillarPair(Sprite):
     def reappear(self):
         self.x = CANVAS_WIDTH + 40
 
+    def ran_height(self):
+        self.y = random.randint(100, 400)
+
 
 class FlappyGame(GameApp):
     def create_sprites(self):
@@ -49,6 +53,7 @@ class FlappyGame(GameApp):
     def post_update(self):
         if self.pillar_pair.is_out():
             self.pillar_pair.reappear()
+            self.pillar_pair.ran_height()
 
     def on_key_pressed(self, event):
         pass
