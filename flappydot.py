@@ -27,7 +27,7 @@ class Dot(Sprite):
         self.is_started = True
 
     def jump(self):
-        self.vy = JUMP_VELOCITY
+        self.vu = JUMP_VELOCITY
 
 
 class PillarPair(Sprite):
