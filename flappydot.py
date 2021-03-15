@@ -10,15 +10,24 @@ UPDATE_DELAY = 33
 GRAVITY = 2.5
 STARTING_VELOCITY = -30
 PILLAR_SPEED = 6
+JUMP_VELOCITY = 20
 
 
 class Dot(Sprite):
     def init_element(self):
         self.vy = STARTING_VELOCITY
+        self.is_started = False
 
     def update(self):
-        self.y += self.vy
-        self.vy += GRAVITY
+        if self.is_started:
+            self.y += self.vy
+            self.vy += GRAVITY
+
+    def start(self):
+        self.is_started = True
+
+    def jump(self):
+        self.vy = JUMP_VELOCITY
 
 
 class PillarPair(Sprite):
