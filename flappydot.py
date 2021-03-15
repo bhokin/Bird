@@ -65,7 +65,8 @@ class FlappyGame(GameApp):
             self.pillar_pair.random_height()
 
     def on_key_pressed(self, event):
-        pass
+        self.dot.start()
+        self.dot.jump()
 
 
 if __name__ == "__main__":
