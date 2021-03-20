@@ -1,5 +1,6 @@
 import tkinter as tk
 import random
+from tkinter import messagebox
 
 from gamelib import Sprite, GameApp, Text
 
@@ -100,6 +101,8 @@ class FlappyGame(GameApp):
         if self.background.is_out_of_screen():
             self.background.reset_position()
         if self.dot.is_out_of_screen():
+            messagebox.showinfo(title="Flappy Dot Game", message="Boommmmmmmmm!")
+            root.destroy()
             self.dot.is_started = False
             self.pillar_pair.is_started = False
             self.background.is_started = False
