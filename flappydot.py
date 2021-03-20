@@ -1,6 +1,5 @@
 import tkinter as tk
 import random
-from tkinter import messagebox
 
 from gamelib import Sprite, GameApp, Text
 
@@ -59,8 +58,30 @@ class PillarPair(Sprite):
         self.y = random.randint(100, 400)
 
 
+class BackGround(Sprite):
+    def init_element(self):
+        self.is_started = False
+
+    def update(self):
+        if self.is_started:
+            self.x -= PILLAR_SPEED
+
+    def start(self):
+        self.is_started = True
+
+    def is_out_of_screen(self):
+        if self.x < -0:
+            return True
+        return False
+
+    def reset_position(self):
+        self.x = 872
+
+
 class FlappyGame(GameApp):
     def create_sprites(self):
+        self.background = BackGround(self, 'images/Flappy-BG.png', 872, CANVAS_HEIGHT // 2)
+        self.elements.append(self.background)
         self.dot = Dot(self, 'images/dot.png', CANVAS_WIDTH // 2, CANVAS_HEIGHT // 2)
         self.elements.append(self.dot)
         self.pillar_pair = PillarPair(self, 'images/pillar-pair.png', CANVAS_WIDTH, CANVAS_HEIGHT // 2)
@@ -76,15 +97,18 @@ class FlappyGame(GameApp):
         if self.pillar_pair.is_out_of_screen():
             self.pillar_pair.reset_position()
             self.pillar_pair.random_height()
+        if self.background.is_out_of_screen():
+            self.background.reset_position()
         if self.dot.is_out_of_screen():
             self.dot.is_started = False
-            messagebox.showinfo(title="Flappy Dot Game", message="Boommmmmmmmm!")
-            root.destroy()
+            self.pillar_pair.is_started = False
+            self.background.is_started = False
 
     def on_key_pressed(self, event):
         self.dot.start()
         self.dot.jump()
         self.pillar_pair.start()
+        self.background.start()
 
 
 if __name__ == "__main__":
