@@ -1,5 +1,6 @@
 import tkinter as tk
 import random
+from tkinter import messagebox
 
 from gamelib import Sprite, GameApp, Text
 
@@ -34,9 +35,17 @@ class Dot(Sprite):
             return True
         return False
 
+
 class PillarPair(Sprite):
+    def init_element(self):
+        self.is_started = False
+
     def update(self):
-        self.x -= PILLAR_SPEED
+        if self.is_started:
+            self.x -= PILLAR_SPEED
+
+    def start(self):
+        self.is_started = True
 
     def is_out_of_screen(self):
         if self.x < -40:
@@ -69,15 +78,18 @@ class FlappyGame(GameApp):
             self.pillar_pair.random_height()
         if self.dot.is_out_of_screen():
             self.dot.is_started = False
+            messagebox.showinfo(title="Flappy Dot Game", message="Boommmmmmmmm!")
+            root.destroy()
 
     def on_key_pressed(self, event):
         self.dot.start()
         self.dot.jump()
+        self.pillar_pair.start()
 
 
 if __name__ == "__main__":
     root = tk.Tk()
-    root.title("Monkey Banana Game")
+    root.title("Flappy Dot Game")
  
     # do not allow window resizing
     root.resizable(False, False)
