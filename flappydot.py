@@ -10,7 +10,7 @@ CANVAS_HEIGHT = 500
 UPDATE_DELAY = 33
 GRAVITY = 2.5
 STARTING_VELOCITY = -30
-PILLAR_SPEED = 6
+PILLAR_SPEED = 10
 JUMP_VELOCITY = -20
 POSITION_PILLAR_PAIR_2 = random.randint(100, 400)
 
@@ -82,19 +82,19 @@ class BackGround(Sprite):
         return False
 
     def reset_position(self):
-        self.x = 872
+        self.x = 869
 
 
 class FlappyGame(GameApp):
     def create_sprites(self):
-        self.background = BackGround(self, 'images/Flappy-BG.png', 872, CANVAS_HEIGHT // 2)
+        self.background = BackGround(self, 'images/Flappy-BG.png', 869, CANVAS_HEIGHT // 2)
         self.elements.append(self.background)
         self.dot = Dot(self, 'images/dot.png', CANVAS_WIDTH // 2, CANVAS_HEIGHT // 2)
         self.elements.append(self.dot)
-        self.pillar_pair = PillarPair(self, 'images/pillar-pair.png', CANVAS_WIDTH, CANVAS_HEIGHT // 2)
-        self.pillar_pair_2 = PillarPair(self, 'images/pillar-pair.png', CANVAS_WIDTH*1.54, POSITION_PILLAR_PAIR_2)
-        self.elements.append(self.pillar_pair)
-        self.elements.append(self.pillar_pair_2)
+        self.pillar_pair = [PillarPair(self, 'images/pillar-pair.png', CANVAS_WIDTH, CANVAS_HEIGHT // 2),
+                            PillarPair(self, 'images/pillar-pair.png', CANVAS_WIDTH*1.54, POSITION_PILLAR_PAIR_2)]
+        for pillar in self.pillar_pair:
+            self.elements.append(pillar)
 
     def init_game(self):
         self.create_sprites()
@@ -103,24 +103,25 @@ class FlappyGame(GameApp):
         pass
 
     def post_update(self):
-        if self.pillar_pair.is_out_of_screen():
-            self.pillar_pair.reset_position()
-            self.pillar_pair.random_height()
-        if self.pillar_pair_2.is_out_of_screen():
-            self.pillar_pair_2.reset_position()
-            self.pillar_pair_2.random_height()
+        for pillar in self.pillar_pair:
+            if pillar.is_out_of_screen():
+                pillar.reset_position()
+                pillar.random_height()
         if self.background.is_out_of_screen():
             self.background.reset_position()
-        if self.dot.is_out_of_screen() or self.pillar_pair.is_collision(self.dot)\
-                or self.pillar_pair_2.is_collision(self.dot):
+        if self.dot.is_out_of_screen():
             messagebox.showinfo(title="Flappy Dot Game", message="Boommmmmmmmm!")
             root.destroy()
+        for pillar in self.pillar_pair:
+            if pillar.is_collision(self.dot):
+                messagebox.showinfo(title="Flappy Dot Game", message="Boommmmmmmmm!")
+                root.destroy()
 
     def on_key_pressed(self, event):
         self.dot.start()
         self.dot.jump()
-        self.pillar_pair.start()
-        self.pillar_pair_2.start()
+        for pillar in self.pillar_pair:
+            pillar.start()
         self.background.start()
 
 
